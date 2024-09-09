@@ -4,12 +4,12 @@ import org.junit.jupiter.api.assertAll
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class GraphTest {
+class DfsGraphTest {
     @Test
     fun `컴포넌트가 하나인 그래프를 dfs로 내림차순 순회했을때 방문한 정점의 순서를 확인한다`() {
         // given
         val expected = listOf(0, 1, 3, 4, 5, 2, 6, 7, 8);
-        val g = Graph(9)
+        val g = DfsGraph(9)
         g.addEdge(0, 1)
         g.addEdge(0, 2)
         g.addEdge(1, 3)
@@ -33,7 +33,7 @@ class GraphTest {
     fun `컴포넌트가 하나인 그래프를 dfs로 오름차순 순회했을때 방문한 정점의 순서를 확인한다`() {
         // given
         val expected = listOf(0, 2, 8, 6, 7, 1, 5, 4, 3);
-        val g = Graph(9)
+        val g = DfsGraph(9)
         g.addEdge(0, 1)
         g.addEdge(0, 2)
         g.addEdge(1, 3)
@@ -58,7 +58,7 @@ class GraphTest {
         // given
         val expectedComponentCount = 4
         val expectedVertexCountsOfEachComponent = listOf(4, 2, 3, 1);
-        val g = UnConnectedGraph(10)
+        val g = UnConnectedDfsGraph(10)
         g.addEdge(0, 1);
         g.addEdge(1, 3);
         g.addEdge(2, 3);

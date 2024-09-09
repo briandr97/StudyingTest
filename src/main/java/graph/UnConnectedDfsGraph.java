@@ -5,20 +5,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class Graph {
+public class UnConnectedDfsGraph {
     private final int vertexCount;
     private List<Boolean> visited = new ArrayList<Boolean>();
     private final List<ArrayList<Integer>> adjacentVertexes;
-    private final List<Integer> result;
+    private List<Integer> vertexCountsOfEachComponent = new ArrayList<>();
 
-    public Graph(int vertexCount) {
+    public UnConnectedDfsGraph(int vertexCount) {
         this.vertexCount = vertexCount;
         adjacentVertexes = IntStream.range(0, vertexCount).mapToObj(idx -> new ArrayList<Integer>()).toList();
-        result = new ArrayList<Integer>();
     }
 
-    public List<Integer> getResult() {
-        return result;
+    public List<Integer> getVertexCountsOfEachComponent() {
+        return vertexCountsOfEachComponent;
     }
 
     public void addEdge(int v1, int v2) {
@@ -34,17 +33,26 @@ public class Graph {
         adjacentVertexes.forEach(vertexes -> vertexes.sort(Comparator.reverseOrder()));
     }
 
-    public void dfs() {
+    public int dfsAll() {
         visited = new ArrayList<Boolean>(IntStream.range(0, vertexCount).mapToObj(idx -> false).toList());
-        dfs(0);
+        int componentCount = 0;
+        for (int i = 0; i < vertexCount; i++) {
+            if (visited.get(i)) continue;
+            // System.out.println("---new DFS Begins---");
+            // System.out.println("size: " + dfs(i) + "\n");
+            vertexCountsOfEachComponent.add(dfs(i));
+            componentCount++;
+        }
+        return componentCount;
     }
 
-    private void dfs(int startVertex) {
+    private int dfs(int startVertex) {
+        int vertexCountInComponent = 1;
         visited.set(startVertex, true);
-        result.add(startVertex);
-        // System.out.println("node " + startVertex + " visited");
-        adjacentVertexes.get(startVertex).forEach(vertex -> {
-            if (!visited.get(vertex)) dfs(vertex);
-        });
+        System.out.println("node " + startVertex + " visited");
+        for (int vertex : adjacentVertexes.get(startVertex)) {
+            if (!visited.get(vertex)) vertexCountInComponent += dfs(vertex);
+        }
+        return vertexCountInComponent;
     }
 }
