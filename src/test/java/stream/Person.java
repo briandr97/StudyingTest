@@ -1,4 +1,4 @@
-package array;
+package stream;
 
 import java.util.Objects;
 
